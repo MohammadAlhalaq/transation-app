@@ -23,7 +23,9 @@
     "tape": "^4.11.0"
   },
   "scripts": {
-    "test": "node test/test.js | tap-spec"
+    "test": "node test/test.js | tap-spec",
+    "start": "node src/index.js",
+    "watch": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
