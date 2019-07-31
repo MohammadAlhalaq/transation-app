@@ -18,18 +18,6 @@ test('test success search', (t) => {
 });
 
 
-test('test success json response', (t) => {
-  supertest(app)
-    .post('/search')
-    .send(JSON.stringify({ input: 'fo' }))
-    .expect(200)
-    .expect('Content-Type', /html/)
-    .end((err, res) => {
-      t.error(err, 'should not return err');
-      t.end();
-    });
-});
-
 test('test success file not found', (t) => {
   supertest(app)
     .get('/jhgvjgv')
