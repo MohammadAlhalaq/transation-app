@@ -4,6 +4,8 @@ const viewTranslate = document.querySelector('#translate');
 const from = document.querySelector('#from');
 const to = document.querySelector('#to');
 
+handleError.classList.add('display');
+
 const langs = {
   Afrikaans: 'af',
   Amharic: 'am',
@@ -124,6 +126,7 @@ inputWord.addEventListener('keyup', (a) => {
   viewTranslate.setAttribute('style', 'color: red');
   if (inputWord.value === '') {
     viewTranslate.textContent = '';
+    handleError.classList.add('display');
   }
   if (inputWord === document.activeElement && a.key !== 'Backspace') {
     setTimeout(() => {
@@ -132,9 +135,11 @@ inputWord.addEventListener('keyup', (a) => {
         .then((res2) => {
           viewTranslate.textContent = res2;
           handleError.textContent = '';
+          handleError.classList.add('display');
         })
         .catch((err) => {
           handleError.textContent = err;
+          handleError.classList.remove('display');
         });
     }, 1500);
   }
