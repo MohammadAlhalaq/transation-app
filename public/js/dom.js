@@ -1,7 +1,10 @@
 const inputWord = document.querySelector('#word');
+const handleError = document.querySelector('#error');
 const viewTranslate = document.querySelector('#translate');
 const from = document.querySelector('#from');
 const to = document.querySelector('#to');
+
+handleError.classList.add('display');
 
 const langs = {
   Afrikaans: 'af',
@@ -103,6 +106,7 @@ keys.forEach((element) => {
   const option = document.createElement('option');
   option.value = langs[element];
   option.textContent = element;
+  if (element === 'Arabic') option.selected = 'selected';
   from.appendChild(option);
 });
 
@@ -110,18 +114,33 @@ keys.forEach((element) => {
   const option = document.createElement('option');
   option.value = langs[element];
   option.textContent = element;
+  if (element === 'English') option.selected = 'selected';
   to.appendChild(option);
+
 });
 // ?lang=${}
-inputWord.addEventListener('keyup', () => {
+inputWord.addEventListener('keyup', (a) => {
   const word = inputWord.value;
+  const langfrom = from.value;
+  const langto = to.value;
   viewTranslate.setAttribute('style', 'color: red');
-  if (inputWord === document.activeElement) {
-    createXhr(`/translate?word=${word}`)
-      .then(res1 => res1.text[0])
-      .then((res2) => {
-        viewTranslate.textContent = res2;
-      })
-      .catch(err => console.log(err));
+  if (inputWord.value === '') {
+    viewTranslate.textContent = '';
+    handleError.classList.add('display');
+  }
+  if (inputWord === document.activeElement && a.key !== 'Backspace') {
+    setTimeout(() => {
+      createXhr(`/translate?word=${word}&langfrom=${langfrom}&langto=${langto}`)
+        .then(res1 => res1.text[0])
+        .then((res2) => {
+          viewTranslate.textContent = res2;
+          handleError.textContent = '';
+          handleError.classList.add('display');
+        })
+        .catch((err) => {
+          handleError.textContent = err;
+          handleError.classList.remove('display');
+        });
+    }, 1500);
   }
 });
